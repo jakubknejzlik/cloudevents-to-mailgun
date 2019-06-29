@@ -47,8 +47,8 @@ func (t *MailgunTransport) SendMessage(msg SMTPTransportMessage) error {
 		sender = t.sender
 	}
 
-	fmt.Println("sending message", msg.From, msg.Subject, msg.HTML, msg.To)
-	message := t.mg.NewMessage(msg.From, msg.Subject, msg.HTML, msg.To...)
+	fmt.Println("sending message", sender, msg.Subject, msg.HTML, msg.To)
+	message := t.mg.NewMessage(sender, msg.Subject, msg.HTML, msg.To...)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
