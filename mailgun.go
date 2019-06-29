@@ -47,22 +47,21 @@ func (t *MailgunTransport) SendMessage(msg SMTPTransportMessage) error {
 		sender = t.sender
 	}
 
-	for _, to := range msg.To {
-		message := t.mg.NewMessage(msg.From, msg.Subject, msg.HTML, to)
+	fmt.Println("sending message", msg.From, msg.Subject, msg.HTML, msg.To)
+	message := t.mg.NewMessage(msg.From, msg.Subject, msg.HTML, msg.To...)
 
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
 
-		// Send the message	with a 10 second timeout
-		resp, id, err := t.mg.Send(ctx, message)
+	// Send the message	with a 10 second timeout
+	resp, id, err := t.mg.Send(ctx, message)
 
-		if err != nil {
-			panic(err)
-			return err
-		}
-
-		fmt.Printf("ID: %s Resp: %s\n", id, resp)
+	if err != nil {
+		panic(err)
+		return err
 	}
+
+	fmt.Printf("ID: %s Resp: %s\n", id, resp)
 
 	return nil
 }
