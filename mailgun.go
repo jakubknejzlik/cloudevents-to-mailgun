@@ -57,7 +57,6 @@ func (t *MailgunTransport) SendMessage(msg SMTPTransportMessage) error {
 	resp, id, err := t.mg.Send(ctx, message)
 
 	if err != nil {
-		panic(err)
 		return err
 	}
 
